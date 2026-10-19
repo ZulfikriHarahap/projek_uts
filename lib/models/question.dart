@@ -16,7 +16,7 @@ class Question {
     required this.options,
     required this.correctIndex,
     this.explanation = '',
-  }) : assert(correctIndex >= 0 && correctIndex < options.length);
+  });
 
   String get correctAnswer => options[correctIndex];
 }
