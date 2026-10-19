@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 /// Baris ringkasan satu soal pada halaman hasil:
-/// menampilkan jawaban pemain dan jawaban yang benar.
+/// jawaban pemain, jawaban yang benar, dan pembahasan.
 class AnswerSummaryTile extends StatelessWidget {
   final int number;
   final String question;
   final String? userAnswer;
   final String correctAnswer;
   final bool isCorrect;
+  final String explanation;
 
   const AnswerSummaryTile({
     super.key,
@@ -16,6 +17,7 @@ class AnswerSummaryTile extends StatelessWidget {
     required this.userAnswer,
     required this.correctAnswer,
     required this.isCorrect,
+    this.explanation = '',
   });
 
   @override
@@ -59,6 +61,15 @@ class AnswerSummaryTile extends StatelessWidget {
                       'Jawaban benar: $correctAnswer',
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: Colors.green.shade700,
+                      ),
+                    ),
+                  ],
+                  if (explanation.isNotEmpty) ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      'Pembahasan: $explanation',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: scheme.onSurfaceVariant,
                       ),
                     ),
                   ],

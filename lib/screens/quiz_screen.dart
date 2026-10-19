@@ -2,20 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../core/routes/app_routes.dart';
+import '../models/score_record.dart';
 import '../providers/quiz_provider.dart';
+import '../providers/score_history_provider.dart';
 import '../widgets/answer_option_button.dart';
 import '../widgets/question_card.dart';
 import '../widgets/quiz_progress_indicator.dart';
 import '../widgets/responsive_body.dart';
 import '../widgets/theme_toggle_button.dart';
 
-/// Halaman 2: menampilkan soal dan pilihan jawaban.
-/// STATELESS: seluruh state (soal aktif, jawaban terpilih) diambil dari
-/// QuizProvider melalui Consumer, sehingga aman dari rotasi layar.
+/// Halaman kuis: soal, opsi jawaban, dan progres.
+/// STATELESS: seluruh state diambil dari QuizProvider melalui Consumer.
 class QuizScreen extends StatelessWidget {
   const QuizScreen({super.key});
 
-  void _finishQuiz(BuildContext context, QuizProvider quiz) {
+  /// Menyelesaikan kuis, menyimpan ke riwayat, lalu membuka halaman hasil.
+  void _finalize(BuildContext context, QuizProvider quiz) {
+    if (quiz.isFinished) return; // cegah penyimpanan ganda
+    quiz.finish();
+    context.read<ScoreHistoryProvider>().add(
+          ScoreRecord(
+            playerName: quiz.playerName,
+            categoryName: quiz.category?.name ?? 'Umum',
+            correct: quiz.correctCount,
+            wrong: quiz.wrongCount,
+            unanswered: quiz.unansweredCount,
+            finishedAt: DateTime.now(),
+          ),
+        );
+    Navigator.of(context).pushReplacementNamed(AppRoutes.result);
+  }
+
+  /// Tombol Selesai ditekan: semua soal harus sudah dijawab.
+  void _onFinishPressed(BuildContext context, QuizProvider quiz) {
     if (!quiz.allAnswered) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -26,9 +45,7 @@ class QuizScreen extends StatelessWidget {
       );
       return;
     }
-    quiz.finish();
-    // pushReplacement: tombol back tidak kembali ke kuis yang sudah selesai
-    Navigator.of(context).pushReplacementNamed(AppRoutes.result);
+    _finalize(context, quiz);
   }
 
   @override
@@ -57,12 +74,12 @@ class QuizScreen extends StatelessWidget {
                   progress: quiz.progress,
                 ),
                 const SizedBox(height: 24),
+                const SizedBox(height: 24),
                 QuestionCard(
                   number: quiz.currentIndex + 1,
                   question: question.text,
                 ),
                 const SizedBox(height: 20),
-                // Membuat daftar tombol opsi jawaban secara dinamis
                 for (var i = 0; i < question.options.length; i++)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 12),
@@ -74,7 +91,6 @@ class QuizScreen extends StatelessWidget {
                     ),
                   ),
                 const SizedBox(height: 16),
-                // Expanded membagi lebar tombol secara adaptif
                 Row(
                   children: [
                     Expanded(
@@ -87,7 +103,7 @@ class QuizScreen extends StatelessWidget {
                     Expanded(
                       child: FilledButton(
                         onPressed: isLast
-                            ? () => _finishQuiz(context, quiz)
+                            ? () => _onFinishPressed(context, quiz)
                             : quiz.next,
                         child: Text(isLast ? 'Selesai' : 'Lanjut'),
                       ),
