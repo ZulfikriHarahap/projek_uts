@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 /// Konfigurasi tema terang dan gelap (dual theme).
 /// Warna dibuat dari satu seed sehingga konsisten di kedua mode.
@@ -20,15 +19,13 @@ class AppTheme {
 
     return base.copyWith(
       scaffoldBackgroundColor: colorScheme.surface,
-      // Terapkan Poppins ke seluruh teks aplikasi
-      textTheme: GoogleFonts.poppinsTextTheme(base.textTheme),
       appBarTheme: AppBarTheme(
         centerTitle: true,
         backgroundColor: colorScheme.surface,
         foregroundColor: colorScheme.onSurface,
         elevation: 0,
         scrolledUnderElevation: 0,
-        titleTextStyle: GoogleFonts.poppins(
+        titleTextStyle: base.textTheme.titleLarge?.copyWith(
           fontSize: 20,
           fontWeight: FontWeight.w600,
           color: colorScheme.onSurface,

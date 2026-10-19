@@ -7,7 +7,7 @@ class Question {
   /// Indeks jawaban yang benar di dalam [options] (dimulai dari 0).
   final int correctIndex;
 
-  const Question({
+  Question({
     required this.id,
     required this.text,
     required this.options,

@@ -3,7 +3,7 @@ import '../models/question.dart';
 /// Sumber data soal (dummy/lokal).
 /// Semua soal disimpan dalam SATU list, bukan satu file per soal.
 /// Untuk menambah soal, cukup tambahkan Question baru di list ini.
-const List<Question> quizQuestions = [
+final List<Question> quizQuestions = [
   Question(
     id: 1,
     text: 'Bahasa pemrograman apa yang digunakan untuk membangun aplikasi Flutter?',
