@@ -2,6 +2,21 @@
 
 A new Flutter project.
 
+## Fitur
+
+- Halaman utama (Home): nama aplikasi, info singkat, pilihan kategori, dan tombol mulai kuis.
+- Kategori kuis: Pemrograman, Pengetahuan Umum, Matematika, dan Acak (campuran dari semua kategori).
+- Kuis pilihan ganda dengan empat opsi (A, B, C, D) dan navigasi Sebelumnya / Lanjut.
+- Indikator progres (nomor soal dan bar persentase).
+- Halaman hasil: skor, jumlah benar, salah, dan kosong, serta pembahasan setiap soal.
+- Riwayat skor dan papan skor (leaderboard), disimpan selama aplikasi berjalan.
+- Ulangi kuis atau kembali ke halaman awal.
+- State kuis tetap aman saat layar dirotasi atau berpindah halaman (Provider).
+- Dual theme: mode terang dan gelap, dapat diganti langsung oleh pengguna.
+- Layout responsif untuk HP, tablet, dan web view.
+- Custom font Poppins dari aset lokal (`assets/fonts/`).
+- Data soal dummy lokal (tanpa database eksternal).
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

@@ -7,11 +7,15 @@ class Question {
   /// Indeks jawaban yang benar di dalam [options] (dimulai dari 0).
   final int correctIndex;
 
+  /// Pembahasan singkat yang ditampilkan di halaman hasil.
+  final String explanation;
+
   const Question({
     required this.id,
     required this.text,
     required this.options,
     required this.correctIndex,
+    this.explanation = '',
   }) : assert(correctIndex >= 0 && correctIndex < options.length);
 
   String get correctAnswer => options[correctIndex];
