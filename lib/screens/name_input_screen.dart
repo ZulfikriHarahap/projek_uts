@@ -48,7 +48,7 @@ class _NameInputScreenState extends State<NameInputScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Data Pemain'),
+        title: const Text('Data Pengguna'),
         actions: const [ThemeToggleButton()],
       ),
       body: ResponsiveBody(
@@ -56,7 +56,7 @@ class _NameInputScreenState extends State<NameInputScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(Responsive.scale(context, 24)),
               child: Image.asset(
                 'assets/images/name_banner.png',
                 height: Responsive.heightFraction(context, 0.25),
@@ -74,20 +74,13 @@ class _NameInputScreenState extends State<NameInputScreen> {
             ),
             const SizedBox(height: 24),
             Text(
-              'Siapa namamu?',
+              'Masukkan Nama Anda',
               style: theme.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.w700,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
-            Text(
-              'Nama ini akan tampil di hasil kuis dan riwayat.',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: scheme.onSurfaceVariant,
-              ),
-              textAlign: TextAlign.center,
-            ),
+
             const SizedBox(height: 28),
             Form(
               key: _formKey,
@@ -99,10 +92,10 @@ class _NameInputScreenState extends State<NameInputScreen> {
                 onFieldSubmitted: (_) => _startQuiz(),
                 decoration: InputDecoration(
                   labelText: 'Nama Lengkap',
-                  hintText: 'Contoh: Budi Santoso',
+                  hintText: 'Contoh: Budiono Siregar',
                   prefixIcon: const Icon(Icons.person_outline_rounded),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(Responsive.scale(context, 16)),
                   ),
                 ),
                 validator: (value) {

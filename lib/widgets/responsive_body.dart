@@ -14,13 +14,15 @@ class ResponsiveBody extends StatelessWidget {
     return SafeArea(
       child: LayoutBuilder(
         builder: (context, constraints) {
+          // Jarak atas-bawah dihitung dari skala layar, bukan angka tetap
+          final vertical = Responsive.scale(context, 16);
           return SingleChildScrollView(
             padding: Responsive.horizontalPadding(context)
-                .copyWith(top: 16, bottom: 24),
+                .copyWith(top: vertical, bottom: vertical * 1.5),
             child: ConstrainedBox(
               // Agar konten pendek tetap berada di tengah layar
               constraints: BoxConstraints(
-                minHeight: constraints.maxHeight - 40,
+                minHeight: constraints.maxHeight - vertical * 2.5,
               ),
               child: Center(
                 child: ConstrainedBox(

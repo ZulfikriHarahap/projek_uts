@@ -7,6 +7,7 @@ import '../providers/quiz_provider.dart';
 import '../providers/score_history_provider.dart';
 import '../widgets/answer_option_button.dart';
 import '../widgets/question_card.dart';
+import '../widgets/question_number_grid.dart';
 import '../widgets/quiz_progress_indicator.dart';
 import '../widgets/responsive_body.dart';
 import '../widgets/theme_toggle_button.dart';
@@ -73,7 +74,16 @@ class QuizScreen extends StatelessWidget {
                   total: quiz.totalQuestions,
                   progress: quiz.progress,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 16),
+                QuestionNumberGrid(
+                  total: quiz.totalQuestions,
+                  currentIndex: quiz.currentIndex,
+                  answered: List<bool>.generate(
+                    quiz.totalQuestions,
+                    quiz.isAnsweredAt,
+                  ),
+                  onSelect: quiz.goTo,
+                ),
                 const SizedBox(height: 24),
                 QuestionCard(
                   number: quiz.currentIndex + 1,

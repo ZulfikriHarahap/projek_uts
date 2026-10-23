@@ -6,17 +6,24 @@ import '../core/utils/responsive.dart';
 import '../data/quiz_data.dart';
 import '../models/quiz_category.dart';
 import '../providers/quiz_provider.dart';
+import '../widgets/resume_quiz_card.dart';
 import '../widgets/category_card.dart';
 import '../widgets/responsive_body.dart';
 import '../widgets/theme_toggle_button.dart';
 
-/// Beranda: sapaan pengguna, info singkat, dan daftar kategori.
-/// Mengetuk kategori langsung memulai kuis dengan nama pemain default.
+/// Beranda: banner persegi panjang berisi sapaan, info singkat, dan daftar kategori.
+/// Mengetuk kategori membuka halaman input nama.
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   /// Memilih kategori lalu membuka halaman input nama.
   /// Progres kuis sebelumnya direset oleh startCategory.
+  /// Melanjutkan kuis yang belum selesai langsung ke halaman kuis.
+  void _resumeQuiz(BuildContext context, QuizCategory category) {
+    context.read<QuizProvider>().startCategory(category);
+    Navigator.of(context).pushNamed(AppRoutes.quiz);
+  }
+
   void _openCategory(BuildContext context, QuizCategory category) {
     context.read<QuizProvider>().startCategory(category);
     Navigator.of(context).pushNamed(AppRoutes.name);
@@ -26,6 +33,8 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final quiz = context.watch<QuizProvider>();
+    final unfinished = quiz.unfinishedCategories;
 
     return Scaffold(
       appBar: AppBar(
@@ -36,38 +45,72 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              'Selamat datang!',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(height: 2),
-            Text(
-              'Siap menguji pengetahuanmu hari ini?',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: scheme.onSurfaceVariant,
-              ),
-            ),
-            const SizedBox(height: 16),
+            // Banner persegi panjang: gambar, lapisan gelap, dan teks di bawahnya
             ClipRRect(
-              borderRadius: BorderRadius.circular(24),
-              child: Image.asset(
-                'assets/images/quiz_banner.png',
-                height: Responsive.heightFraction(context, 0.2),
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
-                  height: Responsive.heightFraction(context, 0.2),
-                  color: scheme.primaryContainer,
-                  child: Icon(
-                    Icons.quiz_rounded,
-                    size: Responsive.scale(context, 72),
-                    color: scheme.onPrimaryContainer,
-                  ),
+              borderRadius: BorderRadius.circular(Responsive.scale(context, 20)),
+              child: SizedBox(
+                height: Responsive.heightFraction(context, 0.22),
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Image.asset(
+                      'assets/images/quiz_banner.png',
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          Container(color: scheme.primaryContainer),
+                    ),
+                    DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.black.withValues(alpha: 0.05),
+                            Colors.black.withValues(alpha: 0.65),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(Responsive.scale(context, 18)),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Selamat Datang!',
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.headlineSmall?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Siap menguji pengetahuanmu hari ini?',
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
             const SizedBox(height: 16),
+            if (unfinished.isNotEmpty) ...[
+              ResumeQuizCard(
+                category: unfinished.last,
+                onResume: () => _resumeQuiz(context, unfinished.last),
+              ),
+              const SizedBox(height: 16),
+            ],
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16),

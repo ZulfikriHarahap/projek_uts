@@ -23,7 +23,6 @@ flutter:
   # Aset gambar dan ikon
   assets:
     - assets/images/
-    - assets/icons/
 
   # Font Poppins dari aset lokal
   fonts:

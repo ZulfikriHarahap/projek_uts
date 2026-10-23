@@ -36,7 +36,7 @@ class AnswerOptionButton extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         decoration: BoxDecoration(
           color: backgroundColor,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(Responsive.scale(context, 16)),
           border: Border.all(
             color: borderColor,
             width: isSelected ? 2 : 1,
@@ -45,7 +45,7 @@ class AnswerOptionButton extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(Responsive.scale(context, 16)),
             onTap: onTap,
             child: Padding(
               padding: EdgeInsets.symmetric(

@@ -51,7 +51,7 @@ class ScoreSummaryCard extends StatelessWidget {
                       SizedBox.expand(
                         child: CircularProgressIndicator(
                           value: value,
-                          strokeWidth: 12,
+                          strokeWidth: Responsive.scale(context, 12),
                           backgroundColor: scheme.surfaceContainerHighest,
                           color: grade.color,
                         ),

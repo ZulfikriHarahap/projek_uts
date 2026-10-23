@@ -10,7 +10,14 @@ import '../widgets/result_stat_tile.dart';
 import '../widgets/score_summary_card.dart';
 import '../widgets/theme_toggle_button.dart';
 
-/// Halaman hasil: skor, jumlah benar/salah/kosong, dan pembahasan.
+/// Emoji sesuai nilai: tinggi, sedang, atau rendah.
+String _resultEmoji(double percent) {
+  if (percent >= 0.8) return '🏆';
+  if (percent >= 0.5) return '👍';
+  return '😿';
+}
+
+/// Halaman hasil: emoji, skor, jumlah benar/salah/kosong, dan pembahasan.
 /// STATELESS: data dibaca dari QuizProvider.
 class ResultScreen extends StatelessWidget {
   const ResultScreen({super.key});
@@ -20,6 +27,9 @@ class ResultScreen extends StatelessWidget {
     return Consumer<QuizProvider>(
       builder: (context, quiz, _) {
         final theme = Theme.of(context);
+        final percent = quiz.totalQuestions == 0
+            ? 0.0
+            : quiz.score / quiz.totalQuestions;
 
         return Scaffold(
           appBar: AppBar(
@@ -31,16 +41,12 @@ class ResultScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Image.asset(
-                  'assets/icons/trophy.png',
-                  height: Responsive.scale(context, 96),
-                  errorBuilder: (context, error, stackTrace) => Icon(
-                    Icons.emoji_events_rounded,
-                    size: Responsive.scale(context, 96),
-                    color: Colors.amber,
-                  ),
+                Text(
+                  _resultEmoji(percent),
+                  style: TextStyle(fontSize: Responsive.scale(context, 72)),
+                  textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 8),
                 ScoreSummaryCard(
                   playerName: quiz.playerName,
                   score: quiz.score,
@@ -115,7 +121,7 @@ class ResultScreen extends StatelessWidget {
                 const SizedBox(height: 12),
                 OutlinedButton.icon(
                   icon: const Icon(Icons.home_rounded),
-                  label: const Text('Kembali ke Awal'),
+                  label: const Text('Kembali ke Beranda'),
                   style: OutlinedButton.styleFrom(
                     minimumSize: Size.fromHeight(Responsive.scale(context, 52)),
                   ),

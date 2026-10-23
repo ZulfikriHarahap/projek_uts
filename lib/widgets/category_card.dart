@@ -25,7 +25,7 @@ class CategoryCard extends StatelessWidget {
           child: Row(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(Responsive.scale(context, 14)),
                 child: Image.asset(
                   category.imagePath,
                   width: thumbSize,
