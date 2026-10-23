@@ -5,19 +5,22 @@ import '../core/routes/app_routes.dart';
 import '../core/utils/responsive.dart';
 import '../data/quiz_data.dart';
 import '../models/quiz_category.dart';
+import '../providers/profile_provider.dart';
 import '../providers/quiz_provider.dart';
 import '../widgets/category_card.dart';
+import '../widgets/profile_avatar.dart';
 import '../widgets/responsive_body.dart';
 import '../widgets/theme_toggle_button.dart';
 
 /// Beranda: sapaan pengguna, info singkat, dan daftar kategori.
-/// Mengetuk kategori langsung memulai kuis dengan nama pemain default.
+/// Mengetuk kategori langsung memulai kuis. Nama pemain diambil dari profil.
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   void _startQuiz(BuildContext context, QuizCategory category) {
     final quiz = context.read<QuizProvider>();
-    quiz.setPlayerName(defaultPlayerName);
+    final profile = context.read<ProfileProvider>();
+    quiz.setPlayerName(profile.name);
     // Memulai kategori akan mereset progres kuis sebelumnya
     quiz.startCategory(category);
     Navigator.of(context).pushNamed(AppRoutes.quiz);
@@ -27,6 +30,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final profile = context.watch<ProfileProvider>();
 
     return Scaffold(
       appBar: AppBar(
@@ -37,18 +41,32 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              'Halo, $defaultPlayerName',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
+            Row(
+              children: [
+                ProfileAvatar(bytes: profile.avatarBytes, radius: 24),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Halo, ${profile.name}',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        'Siap menguji pengetahuanmu hari ini?',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: scheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 2),
-            Text(
-              'Siap menguji pengetahuanmu hari ini?',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: scheme.onSurfaceVariant,
-              ),
             ),
             const SizedBox(height: 16),
             ClipRRect(

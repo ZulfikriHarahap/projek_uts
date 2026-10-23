@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../core/utils/responsive.dart';
 import '../providers/score_history_provider.dart';
+import '../widgets/responsive_body.dart';
 import '../widgets/score_record_tile.dart';
 import '../widgets/theme_toggle_button.dart';
 

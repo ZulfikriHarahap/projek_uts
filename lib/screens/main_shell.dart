@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'history_screen.dart';
 import 'home_screen.dart';
+import 'profile_screen.dart';
 
-/// Kerangka utama dengan navigasi bawah: Beranda dan Riwayat.
+/// Kerangka utama dengan navigasi bawah: Beranda, Riwayat, dan Profil.
 /// STATEFUL karena menyimpan tab yang sedang aktif.
 /// IndexedStack menjaga setiap halaman tetap hidup saat berpindah tab.
 class MainShell extends StatefulWidget {
@@ -19,6 +20,7 @@ class _MainShellState extends State<MainShell> {
   static const List<Widget> _pages = [
     HomeScreen(),
     HistoryScreen(),
+    ProfileScreen(),
   ];
 
   @override
@@ -38,6 +40,11 @@ class _MainShellState extends State<MainShell> {
             icon: Icon(Icons.history_outlined),
             selectedIcon: Icon(Icons.history_rounded),
             label: 'Riwayat',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person_outline_rounded),
+            selectedIcon: Icon(Icons.person_rounded),
+            label: 'Profil',
           ),
         ],
       ),

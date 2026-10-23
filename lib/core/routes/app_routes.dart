@@ -5,7 +5,7 @@ import '../../screens/quiz_screen.dart';
 import '../../screens/result_screen.dart';
 
 /// Konstanta nama route dan peta route aplikasi.
-/// Halaman utama adalah MainShell (navigasi bawah: Beranda dan Riwayat).
+/// Halaman utama adalah MainShell (navigasi bawah: Beranda, Riwayat, Profil).
 class AppRoutes {
   AppRoutes._();
 

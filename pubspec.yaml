@@ -11,6 +11,7 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   provider: ^6.1.2        # State management (ChangeNotifier + Provider)
+  image_picker: ^1.1.2    # Pilih foto profil dari galeri
 
 dev_dependencies:
   flutter_test:

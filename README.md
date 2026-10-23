@@ -4,8 +4,9 @@ A new Flutter project.
 
 ## Fitur
 
-- Navigasi bawah: Beranda dan Riwayat.
+- Navigasi bawah: Beranda, Riwayat, dan Profil.
 - Beranda: sapaan pengguna, info singkat, pilihan kategori, dan tombol mulai kuis.
+- Profil: nama, email, instansi, foto profil dari galeri, dan statistik kuis.
 - Kategori kuis: Pemrograman, Pengetahuan Umum, Matematika, dan Acak (campuran dari semua kategori). Setiap kategori berisi 10 soal.
 - Kuis pilihan ganda dengan empat opsi (A, B, C, D) dan navigasi Sebelumnya / Lanjut.
 - Indikator progres (nomor soal dan bar persentase).

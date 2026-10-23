@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 
 /// Menyimpan data profil pengguna: nama, email, instansi, dan foto.

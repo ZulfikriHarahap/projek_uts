@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import '../models/question.dart';
 import '../models/quiz_category.dart';
 
-const String defaultPlayerName = 'Fikri';
 
 /// Daftar kategori yang tampil di halaman utama.
 const List<QuizCategory> quizCategories = [
