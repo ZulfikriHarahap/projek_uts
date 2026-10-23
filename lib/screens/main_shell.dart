@@ -4,9 +4,6 @@ import 'history_screen.dart';
 import 'home_screen.dart';
 import 'profile_screen.dart';
 
-/// Kerangka utama dengan navigasi bawah: Beranda, Riwayat, dan Profil.
-/// STATEFUL karena menyimpan tab yang sedang aktif.
-/// IndexedStack menjaga setiap halaman tetap hidup saat berpindah tab.
 class MainShell extends StatefulWidget {
   const MainShell({super.key});
 

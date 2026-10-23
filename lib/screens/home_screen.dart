@@ -67,7 +67,6 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
             ),
-            ),
             const SizedBox(height: 16),
             ClipRRect(
               borderRadius: BorderRadius.circular(24),
