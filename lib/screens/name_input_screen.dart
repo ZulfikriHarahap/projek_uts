@@ -7,9 +7,8 @@ import '../providers/quiz_provider.dart';
 import '../widgets/responsive_body.dart';
 import '../widgets/theme_toggle_button.dart';
 
-/// Halaman 1: input nama pemain.
-/// STATEFUL karena memiliki TextEditingController & GlobalKey form
-/// yang harus dibuat dan dibuang (dispose) sesuai siklus hidup widget.
+/// Halaman input nama sebelum kuis dimulai.
+/// STATEFUL karena memiliki TextEditingController dan GlobalKey form.
 class NameInputScreen extends StatefulWidget {
   const NameInputScreen({super.key});
 
@@ -24,7 +23,7 @@ class _NameInputScreenState extends State<NameInputScreen> {
   @override
   void initState() {
     super.initState();
-    // Isi ulang nama jika pemain kembali ke halaman ini
+    // Isi ulang nama terakhir jika pengguna kembali ke halaman ini
     _nameController = TextEditingController(
       text: context.read<QuizProvider>().playerName,
     );
@@ -38,13 +37,8 @@ class _NameInputScreenState extends State<NameInputScreen> {
 
   void _startQuiz() {
     if (!(_formKey.currentState?.validate() ?? false)) return;
-
-    final quiz = context.read<QuizProvider>();
-    quiz.setPlayerName(_nameController.text);
-    // Jika kuis sebelumnya sudah selesai, mulai ulang dari awal
-    if (quiz.isFinished) quiz.restart();
-
-    Navigator.of(context).pushNamed(AppRoutes.quiz);
+    context.read<QuizProvider>().setPlayerName(_nameController.text);
+    Navigator.of(context).pushReplacementNamed(AppRoutes.quiz);
   }
 
   @override
@@ -54,18 +48,17 @@ class _NameInputScreenState extends State<NameInputScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kuis Pilihan Ganda'),
+        title: const Text('Data Pemain'),
         actions: const [ThemeToggleButton()],
       ),
       body: ResponsiveBody(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Banner gambar dengan fallback jika aset gagal dimuat
             ClipRRect(
               borderRadius: BorderRadius.circular(24),
               child: Image.asset(
-                'assets/images/quiz_banner.png',
+                'assets/images/name_banner.png',
                 height: Responsive.heightFraction(context, 0.25),
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) => Container(
@@ -81,21 +74,21 @@ class _NameInputScreenState extends State<NameInputScreen> {
             ),
             const SizedBox(height: 24),
             Text(
-              'Selamat Datang!',
-              style: theme.textTheme.headlineMedium?.copyWith(
+              'Siapa namamu?',
+              style: theme.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.w700,
               ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
             Text(
-              'Masukkan namamu, lalu jawab setiap soal dengan teliti.',
-              style: theme.textTheme.bodyLarge?.copyWith(
+              'Nama ini akan tampil di hasil kuis dan riwayat.',
+              style: theme.textTheme.bodyMedium?.copyWith(
                 color: scheme.onSurfaceVariant,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 28),
             Form(
               key: _formKey,
               child: TextFormField(

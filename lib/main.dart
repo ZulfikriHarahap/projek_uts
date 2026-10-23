@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'core/routes/app_routes.dart';
 import 'core/theme/app_theme.dart';
 import 'providers/quiz_provider.dart';
+import 'providers/score_history_provider.dart';
 import 'providers/theme_provider.dart';
 
 void main() {
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => QuizProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => ScoreHistoryProvider()),
       ],
       // Consumer hanya membangun ulang MaterialApp saat tema berubah.
       child: Consumer<ThemeProvider>(

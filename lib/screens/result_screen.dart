@@ -6,10 +6,11 @@ import '../core/utils/responsive.dart';
 import '../providers/quiz_provider.dart';
 import '../widgets/answer_summary_tile.dart';
 import '../widgets/responsive_body.dart';
+import '../widgets/result_stat_tile.dart';
 import '../widgets/score_summary_card.dart';
 import '../widgets/theme_toggle_button.dart';
 
-/// Halaman 3: skor akhir dan ringkasan jawaban.
+/// Halaman hasil: skor, jumlah benar/salah/kosong, dan pembahasan.
 /// STATELESS: data dibaca dari QuizProvider.
 class ResultScreen extends StatelessWidget {
   const ResultScreen({super.key});
@@ -45,9 +46,46 @@ class ResultScreen extends StatelessWidget {
                   score: quiz.score,
                   total: quiz.totalQuestions,
                 ),
+                const SizedBox(height: 12),
+                Text(
+                  'Kategori: ${quiz.category?.name ?? '-'}',
+                  style: theme.textTheme.bodyMedium,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ResultStatTile(
+                        label: 'Benar',
+                        value: quiz.correctCount,
+                        icon: Icons.check_circle_rounded,
+                        color: Colors.green.shade600,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: ResultStatTile(
+                        label: 'Salah',
+                        value: quiz.wrongCount,
+                        icon: Icons.cancel_rounded,
+                        color: theme.colorScheme.error,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: ResultStatTile(
+                        label: 'Kosong',
+                        value: quiz.unansweredCount,
+                        icon: Icons.remove_circle_outline_rounded,
+                        color: theme.colorScheme.outline,
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 28),
                 Text(
-                  'Ringkasan Jawaban',
+                  'Ringkasan & Pembahasan',
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
@@ -60,6 +98,7 @@ class ResultScreen extends StatelessWidget {
                     userAnswer: quiz.userAnswerTextAt(i),
                     correctAnswer: quiz.questions[i].correctAnswer,
                     isCorrect: quiz.isCorrectAt(i),
+                    explanation: quiz.questions[i].explanation,
                   ),
                 const SizedBox(height: 16),
                 FilledButton.icon(
@@ -70,8 +109,7 @@ class ResultScreen extends StatelessWidget {
                   ),
                   onPressed: () {
                     quiz.restart();
-                    Navigator.of(context)
-                        .pushReplacementNamed(AppRoutes.quiz);
+                    Navigator.of(context).pushReplacementNamed(AppRoutes.quiz);
                   },
                 ),
                 const SizedBox(height: 12),

@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 
+import '../../screens/main_shell.dart';
 import '../../screens/name_input_screen.dart';
 import '../../screens/quiz_screen.dart';
 import '../../screens/result_screen.dart';
 
 /// Konstanta nama route dan peta route aplikasi.
+/// Halaman utama adalah MainShell (navigasi bawah: Beranda dan Riwayat).
 class AppRoutes {
   AppRoutes._();
 
   static const String home = '/';
+  static const String name = '/name';
   static const String quiz = '/quiz';
   static const String result = '/result';
 
   static final Map<String, WidgetBuilder> routes = {
-    home: (_) => const NameInputScreen(),
+    home: (_) => const MainShell(),
+    name: (_) => const NameInputScreen(),
     quiz: (_) => const QuizScreen(),
     result: (_) => const ResultScreen(),
   };
