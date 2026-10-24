@@ -4,7 +4,6 @@ class ScoreRecord {
   final String categoryName;
   final int correct;
   final int wrong;
-  final int unanswered;
   final DateTime finishedAt;
 
   ScoreRecord({
@@ -12,10 +11,9 @@ class ScoreRecord {
     required this.categoryName,
     required this.correct,
     required this.wrong,
-    required this.unanswered,
     required this.finishedAt,
   });
 
-  int get total => correct + wrong + unanswered;
+  int get total => correct + wrong;
   double get percent => total == 0 ? 0 : correct / total;
 }

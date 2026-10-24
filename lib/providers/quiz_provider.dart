@@ -17,6 +17,9 @@ class QuizProvider extends ChangeNotifier {
   late List<int?> _selectedAnswers; // jawaban per soal (null = belum dijawab)
   String _playerName = '';
   QuizCategory? _category;
+
+  /// Progres kuis yang belum selesai, per id kategori.
+  final Map<String, _SavedProgress> _saved = {};
   int _currentIndex = 0;
   bool _isFinished = false;
 
@@ -69,38 +72,68 @@ class QuizProvider extends ChangeNotifier {
   }
 
   /// Memulai kuis untuk kategori tertentu dan mereset progres.
+  /// Memulai kategori. Jika ada progres yang belum selesai, progres itu dilanjutkan.
   void startCategory(QuizCategory category) {
     _category = category;
-    _questions = questionsForCategory(category.id);
-    _resetProgress();
+    final saved = _saved[category.id];
+    if (saved != null) {
+      _questions = saved.questions;
+      _selectedAnswers = List<int?>.from(saved.answers);
+      _currentIndex = saved.index;
+      _isFinished = false;
+    } else {
+      _questions = questionsForCategory(category.id);
+      _resetProgress();
+    }
     notifyListeners();
   }
+
+  /// Kategori yang punya progres belum selesai.
+  List<QuizCategory> get unfinishedCategories =>
+      _saved.values.map((saved) => saved.category).toList();
 
   void selectAnswer(int optionIndex) {
     if (_isFinished) return;
     _selectedAnswers[_currentIndex] = optionIndex;
+    _persist();
     notifyListeners();
   }
 
   void next() {
     if (isLast) return;
     _currentIndex++;
+    _persist();
     notifyListeners();
   }
+
+  /// Pindah langsung ke nomor soal tertentu (indeks dimulai dari 0).
+  void goTo(int index) {
+    if (_isFinished || index == _currentIndex) return;
+    if (index < 0 || index >= _questions.length) return;
+    _currentIndex = index;
+    _persist();
+    notifyListeners();
+  }
+
+  /// True jika soal pada indeks tertentu sudah dijawab.
+  bool isAnsweredAt(int index) => _selectedAnswers[index] != null;
 
   void previous() {
     if (isFirst) return;
     _currentIndex--;
+    _persist();
     notifyListeners();
   }
 
   void finish() {
     _isFinished = true;
+    if (_category != null) _saved.remove(_category!.id);
     notifyListeners();
   }
 
   /// Mengulang kuis; nama pemain dan kategori dipertahankan.
   void restart() {
+    if (_category != null) _saved.remove(_category!.id);
     _resetProgress();
     notifyListeners();
   }
@@ -113,9 +146,36 @@ class QuizProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Menyimpan progres kategori aktif agar bisa dilanjutkan nanti.
+  void _persist() {
+    final category = _category;
+    if (category == null || _isFinished) return;
+    _saved[category.id] = _SavedProgress(
+      category: category,
+      questions: List<Question>.from(_questions),
+      answers: List<int?>.from(_selectedAnswers),
+      index: _currentIndex,
+    );
+  }
+
   void _resetProgress() {
     _selectedAnswers = List<int?>.filled(_questions.length, null);
     _currentIndex = 0;
     _isFinished = false;
   }
+}
+
+/// Snapshot progres satu kategori yang belum selesai.
+class _SavedProgress {
+  final QuizCategory category;
+  final List<Question> questions;
+  final List<int?> answers;
+  final int index;
+
+  _SavedProgress({
+    required this.category,
+    required this.questions,
+    required this.answers,
+    required this.index,
+  });
 }

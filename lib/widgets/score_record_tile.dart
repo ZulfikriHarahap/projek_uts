@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/score_record.dart';
 
-/// Baris satu riwayat kuis: nama, kategori, tanggal, rincian, dan nilai.
+/// Baris satu riwayat kuis: kategori, tanggal, rincian benar dan salah, dan nilai.
 class ScoreRecordTile extends StatelessWidget {
   final ScoreRecord record;
 
@@ -45,7 +45,7 @@ class ScoreRecordTile extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    'Benar ${record.correct} - Salah ${record.wrong} - Kosong ${record.unanswered}',
+                    'Benar ${record.correct} - Salah ${record.wrong}',
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: scheme.onSurfaceVariant,
                     ),
